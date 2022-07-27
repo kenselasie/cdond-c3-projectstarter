@@ -1,4 +1,7 @@
 version: 2.1
+orbs:
+  node: 'circleci/node:4.1'
+  slack: circleci/slack@4.1
 
 commands:
   # destroy-environment:
@@ -32,7 +35,7 @@ commands:
   #             exit 1
   #           fi
             
-jobs:
+jobs:   
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -46,9 +49,14 @@ jobs:
             cd frontend
             npm install
             npm run build
+            exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack/notify:
+          channel: random
+          event: fail
+          template: basic_fail_1
 
   build-backend:
     docker:
