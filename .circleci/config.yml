@@ -241,7 +241,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt install -y tar gzip
+            sudo apt install -y tar gzip
 
       - install_ansible
 
