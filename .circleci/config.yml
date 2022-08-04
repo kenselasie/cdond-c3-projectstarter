@@ -54,7 +54,7 @@ commands:
             sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible -y
 
-  install_nodejs:
+  install_nodejs13:
     description: Install Node.is 13
     steps:
       - run:
@@ -306,7 +306,7 @@ jobs:
             - "03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"
       - attach_workspace:
           at: ~/
-      - install_nodejs
+      - install_nodejs13
       - install_awscli
       - install_ansible
       - run:
@@ -343,7 +343,7 @@ jobs:
             - "03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"
       - attach_workspace:
           at: ~/
-      - install_nodejs
+      - install_nodejs13
       - install_awscli
       - install_ansible
       - run:
