@@ -312,12 +312,11 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            # your code here
             #!/bin/bash
-            export BACKEND_IP=${
-              aws ec2 describe-instances \
+            export BACKEND_IP=${aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text --filter Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+              --filter Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+              --output text
             }
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -329,7 +328,7 @@ jobs:
             rm -rf node_modules
             npm install
             npm run build
-            aws 53 cp dist s3://udapeople-${CIRCLE WORKFLOW ID: 0:7} --recursive
+            aws 53 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure      
       - destroy-environment
       - revert-migrations           
