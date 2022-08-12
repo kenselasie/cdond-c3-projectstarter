@@ -298,7 +298,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: circleci/node:13.8.0
+      - image: cimg/base:stable
     steps:
       - checkout
       - add_ssh_keys:
@@ -306,6 +306,7 @@ jobs:
             - "03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"
       - attach_workspace:
           at: ~/
+      - install_nodejs13
       - install_awscli
       - install_ansible
       - run:
