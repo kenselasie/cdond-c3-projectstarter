@@ -324,10 +324,11 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            sudo apt install -y tar gzip
             cd frontend
-            rm -rf node_modules
             npm install
             npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws 53 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure      
       - destroy-environment
