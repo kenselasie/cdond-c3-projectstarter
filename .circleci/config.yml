@@ -35,7 +35,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             #!/bin/bash
-            SUCCESS=${curl --insecure "https://kvdb.io/L6NLQfYsiLbTurJucPZEbY/migration_${CIRCLE_WORKFLOW_ID:0:7}"}
+            SUCCESS=$(curl --insecure "https://kvdb.io/L6NLQfYsiLbTurJucPZEbY/migration_${CIRCLE_WORKFLOW_ID:0:7}")
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -313,10 +313,10 @@ jobs:
           name: Get backend url
           command: |
             #!/bin/bash
-            export BACKEND_IP=${aws ec2 describe-instances \
+            export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filter Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --output text}
+              --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
