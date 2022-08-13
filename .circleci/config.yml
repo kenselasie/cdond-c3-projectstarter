@@ -381,13 +381,14 @@ jobs:
           name: Backend smoke test.
           command: |
             # Fetch and prepare the BACKEND_IP env var
-            export BACKEND_IP=$(aws ec2 describe-instances \
+            export BACKEND_URL_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filter Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --output text)
-            echo "$BACKEND_IP"
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
+            export API_URL="http://${BACKEND_URL_IP}:3030"
+            echo ${BACKEND_URL_IP}
+            echo udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            echo ${API_URL}
             if curl "${API_URL}/api/status" | grep "ok"
             then
               exit 0
