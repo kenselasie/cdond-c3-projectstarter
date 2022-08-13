@@ -17,8 +17,8 @@ commands:
           command: |
             # Your code here
             aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
-            aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.workflow_id>>"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.workflow_id>>"
+            aws cloudformation delete-stack --stack-name "backend-<<parameters.workflow_id>>"
+            aws cloudformation delete-stack --stack-name "frontend-<<parameters.workflow_id>>"
             
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -211,7 +211,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udapeople
       - run:
@@ -220,7 +220,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
+              --stack-name "frontend-${CIRCLE_WORKFLOW_ID:0:7}"  \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - run:
           name: Add back-end ip to ansible inventory
@@ -230,7 +230,7 @@ jobs:
             cat inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress'  \
-              --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> inventory.txt
             cat inventory.txt
   
@@ -316,7 +316,7 @@ jobs:
             #!/bin/bash
             export BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
@@ -384,11 +384,11 @@ jobs:
             # Fetch and prepare the BACKEND_IP env var
             export BACKEND_URL_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text)
             export API_URL="http://${BACKEND_URL_IP}:3030"
             echo ${BACKEND_URL_IP}
-            echo udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            echo backend-${CIRCLE_WORKFLOW_ID:0:7}
             echo ${API_URL}
             if curl "${API_URL}/api/status" | grep "ok"
             then
