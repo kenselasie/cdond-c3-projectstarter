@@ -20,3 +20,10 @@
     sudo pm install forever -g
     sudo pm install ts-node -g
     forever start -C "ts-node -r tsconfig-paths/register -r dotenv/config src/main.ts" ./
+  
+  register: execute_node
+
+- name: "Configure pm2 to start as a service"
+  become: true
+  shell: |
+    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
