@@ -4,21 +4,21 @@
     state: directory
 - name: "Unarchive backend files"
   unarchive:
-    sc: artifact.tar.gz
+    src: artifact.tar.gz
     dest: ~/backend-app
 
 - name: "Installing Node Dependencies"
   shell: |
     cd ~/backend-app
-    pm i
+    npm i
 - name: "Executing Node app with PM2"
   shell: |
     cd ~/backend-app/dist
     cd ../
-    nom install
-    nom run build
-    sudo pm install forever -g
-    sudo pm install ts-node -g
+    npm install
+    npm run build
+    sudo npm install forever -g
+    sudo npm install ts-node -g
     forever start -C "ts-node -r tsconfig-paths/register -r dotenv/config src/main.ts" ./
   
   register: execute_node
