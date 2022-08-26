@@ -269,7 +269,7 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure     
-      # - destroy-environment 
+      - destroy-environment
 
   run-migrations:
     docker:
@@ -302,8 +302,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:
-            - "03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"
+          fingerprints: ["03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"]
       - attach_workspace:
           at: ~/
       - install_nodejs
@@ -340,8 +339,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:
-            - "03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"
+          fingerprints: ["03:7f:96:d6:ad:64:3c:88:b8:df:a4:ad:34:c2:cd:02"]
       - attach_workspace:
           at: ~/
       - install_nodejs
@@ -361,8 +359,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
-      - destroy-environment
-      - revert-migrations 
+      # - destroy-environment
+      # - revert-migrations 
 
   smoke-test:
     docker:
