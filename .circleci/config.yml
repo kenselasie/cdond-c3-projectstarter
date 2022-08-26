@@ -258,6 +258,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt install -y tar gzip
+            sudo apt install curl
             pip install awscli
             sudo apk add --update ansible
 
