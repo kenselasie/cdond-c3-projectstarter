@@ -257,15 +257,15 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt install -y tar gzip
-            sudo apt install curl
+            apk add -y tar gzip
+            apk add curl
             pip install awscli
-            sudo apk add --update ansible
+            apk add --update ansible
 
       - run:
           name: Configure server
           command: |
-            cat inventory.txt
+            cat project/.circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure     
