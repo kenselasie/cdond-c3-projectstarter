@@ -228,10 +228,11 @@ jobs:
             # Your code here
             cd .circleci/ansible
             cat inventory.txt
-            aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress'  \
+            BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text >> inventory.txt
+              --output text)
+            echo ${BACKEND_IP} >> inventory.txt
             cat inventory.txt
   
       #       echo ${BACKEND_IP}
@@ -372,10 +373,7 @@ jobs:
       - checkout
       - install_nodejs
       - install_awscli
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
+      
       - run:
           name: Backend smoke test.
           command: |
